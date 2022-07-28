@@ -3,7 +3,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class Queue
+class CustomerHistroyQueue
 {
 	// Initialize front and rear
 	int rear, front;
@@ -12,7 +12,7 @@ class Queue
 	int size;
 	int *arr;
 public:
-	Queue(int s)
+	CustomerHistoryQueue(int s)
 	{
 	front = rear = -1;
 	size = s;
@@ -26,7 +26,7 @@ public:
 
 
 /* Function to create Circular queue */
-void Queue::enQueue(int value)
+void CustomerHistoryQueue::enQueue(int value)
 {
 	if ((front == 0 && rear == size-1) ||
 			(rear == (front-1)%(size-1)))
@@ -55,7 +55,7 @@ void Queue::enQueue(int value)
 }
 
 // Function to delete element from Circular Queue
-int Queue::deQueue()
+int CustomerHistoryQueue::deQueue()
 {
 	if (front == -1)
 	{
@@ -80,7 +80,7 @@ int Queue::deQueue()
 
 // Function displaying the elements
 // of Circular Queue
-void Queue::displayQueue()
+void CustomerHistoryQueue::displayQueue()
 {
 	if (front == -1)
 	{

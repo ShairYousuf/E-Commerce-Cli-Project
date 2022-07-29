@@ -37,6 +37,7 @@ class Item
 };
 int main() 
 {
+	//The adding and deleting items from inventory and the code to adjust json can be made a helper fucntion if you guys see fit
 	//Loop to declare and put all json data into inventory vector always put on top
 	std::vector<Item> Inventory;
 	json_data d = json_util::read("data.json");
@@ -77,10 +78,11 @@ int main()
 	///
 
 
+	///Example of deleting item from inventory
 	Inventory.erase(Inventory.begin()+1, Inventory.begin() + 2);
 	inventory_size--;
 	
-
+	///essential everytime item from inventory is deleted
 	std::string whole2 = d.stringify();
 
 	int LastCurlyCloseBracketPos = whole2.find_last_of("}");
@@ -92,7 +94,7 @@ int main()
 	d = json_util::read("data.json");
 	Inventory.pop_back();
 	inventory_size--;
-
+	///
 
 	
 
@@ -117,8 +119,5 @@ int main()
 
 	json_util::write("data.json", d);	
 
-	//makes delete complete
-	//search the inventory array using id, category
-	//
 }
 

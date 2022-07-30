@@ -3,68 +3,108 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class CustomerHistroyQueue
+
+class Node{
+    public: 
+    int ID;
+    string Name;
+    string Email;
+    string Phone;
+    //history array; know name of class. similar to node type
+
+    Node(){
+
+    };
+
+    Node(int id, string name, string email, string phone ) //add history array
+    {
+      ID = id;
+      Name = name;
+      Email = email;
+      Phone = phone;
+    //add history array
+
+    }
+};
+
+
+class CustomerHistoryQueue
 {
 	// Initialize front and rear
 	int rear, front;
 
 	// Circular Queue
 	int size;
-	int *arr;
+    int currentsize;
+	Node *arr;
 public:
 	CustomerHistoryQueue(int s)
 	{
 	front = rear = -1;
 	size = s;
-	arr = new int[s];
+    currentsize=0;
+	arr = new Node[s];
 	}
 
-	void enQueue(int value);
-	int deQueue();
+	void enQueue(int id, string name, string email, string phone);//add history array
+	void deQueue();
 	void displayQueue();
+    void printCustomerInfo(int idnumber);
 };
 
 
+
+
+
+
+
+
 /* Function to create Circular queue */
-void CustomerHistoryQueue::enQueue(int value)
+//value = ID number
+void CustomerHistoryQueue::enQueue(int id, string name, string email, string phone)//add history array
 {
-	if ((front == 0 && rear == size-1) ||
-			(rear == (front-1)%(size-1)))
+    Node node = Node (id, name, email, phone);//add history array
+
+	//if ((front == 0 && rear == size-1) || (rear == (front-1)%(size-1)))
+    if (currentsize == 5)
 	{
-		printf("\nQueue is Full");
-		return;
+		printf("\nQueue is Full, Deleting the Oldest Member and Adding New Customer");
+        deQueue();
+		
 	}
 
-	else if (front == -1) /* Insert First Element */
+    currentsize +=1;
+
+	if (front == -1) /* Insert First Element */
 	{
 		front = rear = 0;
-		arr[rear] = value;
+		arr[rear] = node;
 	}
 
 	else if (rear == size-1 && front != 0)
 	{
 		rear = 0;
-		arr[rear] = value;
+		arr[rear] = node;
 	}
 
 	else
 	{
 		rear++;
-		arr[rear] = value;
+		arr[rear] = node;
 	}
 }
 
 // Function to delete element from Circular Queue
-int CustomerHistoryQueue::deQueue()
+void CustomerHistoryQueue::deQueue()
 {
 	if (front == -1)
 	{
 		printf("\nQueue is Empty");
-		return INT_MIN;
+		return;
 	}
 
-	int data = arr[front];
-	arr[front] = -1;
+
+	arr[front] = Node();
 	if (front == rear)
 	{
 		front = -1;
@@ -75,7 +115,9 @@ int CustomerHistoryQueue::deQueue()
 	else
 		front++;
 
-	return data;
+    currentsize-=1;
+	return;
+
 }
 
 // Function displaying the elements
@@ -87,48 +129,77 @@ void CustomerHistoryQueue::displayQueue()
 		printf("\nQueue is Empty");
 		return;
 	}
-	printf("\nElements in Circular Queue are: ");
+	printf("\n Customer Information: ");
 	if (rear >= front)
 	{
-		for (int i = front; i <= rear; i++)
-			printf("%d ",arr[i]);
+		for (int i = front; i <= rear; i++){
+			//printf("%d ",arr[i]);
+			
+			Node n = arr[i];
+            cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
+		}
+		    
 	}
 	else
 	{
-		for (int i = front; i < size; i++)
-			printf("%d ", arr[i]);
-
-		for (int i = 0; i <= rear; i++)
-			printf("%d ", arr[i]);
+		for (int i = front; i < size; i++){
+		//	printf("%d ", arr[i]);
+		Node n = arr[i];
+         cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
+		}
+		for (int i = 0; i <= rear; i++){
+			//printf("%d ", arr[i]);
+			Node n = arr[i];
+             cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
+		}
 	}
 }
+
+
+
+//function to search for specific ID and print info associated with it
+void CustomerHistoryQueue::printCustomerInfo(int idnumber){
+    for (int i=0; i<=currentsize; i++)
+    {
+        Node n = arr[i];
+        if (n.ID == idnumber)
+        {
+            cout<<"Here is your customer information: ID: "<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
+            return;
+        }
+    }
+    cout<<"The ID was not found in the customer database.";
+}
+
+
+
+
 
 /* Driver of the program */
 int main()
 {
-	Queue q(5);
+	CustomerHistoryQueue q(5);
 
 	// Inserting elements in Circular Queue
-	q.enQueue(14);
-	q.enQueue(22);
-	q.enQueue(13);
-	q.enQueue(-6);
+	q.enQueue(1569, "snaazzy", "snzyemail", "709876543");
+	q.enQueue(1213, "hello", "hello", "hello");
+	q.enQueue(5674, "youdad", "dadsemail", "69696969");
+	q.enQueue(9854, "hi", "hi", "hi");
 
 	// Display elements present in Circular Queue
 	q.displayQueue();
+   // q.deQueue();
+    //q.deQueue();
 
-	// Deleting elements from Circular Queue
-	printf("\nDeleted value = %d", q.deQueue());
-	printf("\nDeleted value = %d", q.deQueue());
+//	q.displayQueue();
 
-	q.displayQueue();
+//	q.enQueue(9009, "your mom", "yourmom@gmail.com", "70942065");
+//	q.enQueue(2056, "krishna", "krishna@mun.ca", "7091234567");
+//	q.enQueue(5271, "anna", "asbehm@mun.ca", "7098950536" );
 
-	q.enQueue(9);
-	q.enQueue(20);
-	q.enQueue(5);
+  //  q.printCustomerInfo(5271);
+//	q.displayQueue();
 
-	q.displayQueue();
-
-	q.enQueue(20);
+//	q.enQueue(2053, "jo", "ma", "ma");
 	return 0;
 }

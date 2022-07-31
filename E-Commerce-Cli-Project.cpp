@@ -10,13 +10,11 @@ using namespace json;
 int inventory_size;
 json_data d;
 
-
 class Item 
 {
 	public:
 		int	Amount_Sold;
 		string Category;
-		//made time variable into a string
 		string Date_Of_Expiration;
 		int Item_ID;
 		string Name;
@@ -45,12 +43,14 @@ class Item
 		}
 
 		void printItem() {
-			cout << endl << this->Item_ID << " | " << this->Name << " | " << this->Price << " | " << this->Quantity << " | " << this->Category << " | " << this->Amount_Sold << endl;
+			cout << endl << this->Item_ID << " | " << this->Name << " | $" << this->Price << " | " << this->Quantity << " | " << this->Category << " | " << this->Amount_Sold << endl;
 		}
 };
 
+//gloabl Inventory vector for storing Items
 vector<Item> Inventory;
 
+//function to add a new item to inventory
 void addToInventory(int itemID, string name, float price, string expiryDate, int quantity, string category, int amtSold) {
 	Item Temp;
 	Temp.AddData(amtSold, category, expiryDate, itemID, name, price, quantity);
@@ -66,6 +66,7 @@ void addToInventory(int itemID, string name, float price, string expiryDate, int
 	d = json_util::read("data.json");
 }
 
+//function to search by using Item ID of an item
 int searchByItemID(int itemID) {
 	for (int i = 0; i < Inventory.size(); i++) {
 		if (Inventory[i].Item_ID == itemID) {
@@ -74,6 +75,7 @@ int searchByItemID(int itemID) {
 	}
 }
 
+// function to delete an item from inventory
 void deleteFromInventory(int itemID) {
 	Inventory.erase(Inventory.begin() + searchByItemID(itemID));
 	inventory_size--;
@@ -88,6 +90,7 @@ void deleteFromInventory(int itemID) {
 	d = json_util::read("data.json");
 }
 
+//prints items of a specific category
 void listByCategory(string category) {
 	vector<Item> temp;
 	for (int i = 0; i < Inventory.size(); i++) {
@@ -100,15 +103,43 @@ void listByCategory(string category) {
 	}
 }
 
+//prints items of Item ID
+void listByItemID(int itemID) {
+    vector<Item> temp;
+    for (int i = 0; i < Inventory.size(); i++) {
+        if (Inventory[i].Item_ID == itemID) {
+            temp.push_back(Inventory[i]);
+        }
+    }
+    for (int j = 0; j < temp.size(); j++) {
+        temp[j].printItem();
+    }
+}
+
+//prints items of a specific name
+void listByName(string name) {
+    vector<Item> temp;
+    for (int i = 0; i < Inventory.size(); i++) {
+        if (Inventory[i].Name == name) {
+            temp.push_back(Inventory[i]);
+        }
+    }
+    for (int j = 0; j < temp.size(); j++) {
+        temp[j].printItem();
+    }
+}
+
+//updates the quantity of a specific item using Item ID
 void updateQuantity(int itemID, int amt) {
 	Inventory[searchByItemID(itemID)].Quantity += amt;
 }
 
-
+//helper function to print heading template for list of Inventory
 void printHeading() {
 	cout << endl << "Item ID | Name | Price | Quantity | Category | Amt Sold" << endl;
 }
 
+//prints all items in the Inventory
 void printInventory() {
 	for (int i = 0; i < Inventory.size(); i++) {
 		Inventory[i].printItem();
@@ -121,6 +152,7 @@ void printInventory() {
 ///Console Menu
 /// 
 /// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+int runProgram;
 void welcomeMenu();
 void mainMenu();
 void storeMenu();
@@ -152,21 +184,15 @@ void addToCart() {
 
 //lists all the inventory in the store
 void listAll() {
-    //own menu and sort by price and date of expiry here
-    ///
-    /// Item ID | Name | Category | Price | Quantity | Amt Sold
-    /// 123 | Milk | Dairy | 6.99 | 30 | 20
-    /// 567 | Cheese | Dairy | 0.99 | 20 | 10
-    /// 
     cout << endl << "--------------------" << endl;
     cout << endl << "      All Items     " << endl;
     cout << endl << "--------------------" << endl;
 
-    cout << "**print of all items**" << endl;
-    /// <summary>
-    /// helper function example: printAllInventory();
-    /// </summary>
+    //prints all the items in the inventory
+    printHeading();
+    printInventory();
 
+    //goes to add cart menu
     addToCart();
 
 }
@@ -174,28 +200,55 @@ void listAll() {
 //allows user to search products by using category
 void searchByCategory() {
     cout << endl << "--------------------" << endl;
-    cout << endl << "   Category Search  " << endl;
+    cout << endl << " Search by Category  " << endl;
     cout << endl << "--------------------" << endl;
 
     string category;
-    cout << "Which category would you like to search? ";
+    cout << "Which category would you like to search? : ";
     cin >> category;
 
     //print all the items of that category
-    // funciton example: printOfCategory(category);
+    printHeading();
+    listByCategory(category);
 
+    //goes to add cart menu
     addToCart();
-
 }
 
 //allows user to search products by using item ID
 void searchByItemID() {
+    cout << endl << "--------------------" << endl;
+    cout << endl << "  Search by Item ID  " << endl;
+    cout << endl << "--------------------" << endl;
 
+    int itemID;
+    cout << "Please input Item ID to search? : ";
+    cin >> itemID;
+
+    //helper function to find and print item of specific ItemID;
+    printHeading();
+    listByItemID(itemID);
+
+    //goes to add cart menu
+    addToCart();
 }
 
 //allows user to search products by name
 void searchByName() {
+    cout << endl << "--------------------" << endl;
+    cout << endl << "   Search by Name  " << endl;
+    cout << endl << "--------------------" << endl;
 
+    string name;
+    cout << "What is the name of the item you would like to search? : ";
+    cin >> name;
+
+    //print all the items of that name
+    printHeading();
+    listByName(name);
+
+    //goes to add cart menu
+    addToCart();
 }
 
 //function to sort inventory by date
@@ -462,32 +515,38 @@ void addNewItemMenu() {
     cout << endl << "       Add New Item      " << endl;
     cout << endl << "-------------------------" << endl;
 
-    string name, category, expiryDate;
-    int itemID, price, quantity;
+    string name, category, expirydate;
+    int itemID, quantity;
+    float price;
 
-    cout << endl << "Please input Item ID of new item: ";
+    //addToInventory(123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12);
+    
+    cout << endl << "Please input Item Id of new item: ";
     cin >> itemID;
 
-    cout << endl << "Plese input name of new item: ";
+    cout << endl << "Please input Name of new item: ";
     cin >> name;
 
-    cout << endl << "Please input price of new item: ";
+    cout << endl << "Please input Price of new item: ";
     cin >> price;
 
     cout << endl << "Please input Date of Expiry of new item: ";
-    cin >> expiryDate;
+    cin >> expirydate;
 
     cout << endl << "Please input Quanitity of new item: ";
     cin >> quantity;
 
+    cout << endl << "Please input Category of new item: ";
+    cin >> category;
+
     //by default amount sold will be 0
-    //amtSold = 0;
+    //amtsold = 0
 
-    /// helper function for adding new Item:
-    /// addToInventory(itemID, name, price, expiryDate, quantity);
-    /// 
-    cout << "** New item added: " << itemID << " | " << name << " ** ";
+    //helper function for adding new item:
+    addToInventory(itemID, name, price, expirydate, quantity, category, 0);
 
+    cout << "** new item added: " << itemID << " | " << name << " ** ";
+    
     // goes back to admin menu
     adminMenu();
 }
@@ -504,11 +563,12 @@ void deleteItemMenu() {
     cout << endl << "Please input Item ID of new item: ";
     cin >> itemID;
 
-    ///
-    /// helper function: deleteItem(itemID);
-    ///
+    //helper function to delete item from Inventory
+    deleteFromInventory(itemID);
 
     cout << endl << "** Item ID: " << itemID << " has been deleted successfully **" << endl;
+    //goes back to admin menu
+    adminMenu();
 }
 
 void adminMenu() {
@@ -624,7 +684,8 @@ void welcomeMenu() {
         break;
     case -1:
         //exits program completely
-        exit(1);
+        //exit(0);
+        runProgram = 0;
         break;
     default:
         break;
@@ -659,19 +720,27 @@ int main()
 	}
 	//Rest of whatever code
 
-	printHeading();
-	printInventory();
+	//printHeading();
+	//printInventory();
 	//listByCategory("Meat");
 
-	//	addToInventory(Inventory, inventory_size, 123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12, d);
-	addToInventory(123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12);
-	cout << "Inventory size: " << inventory_size;
+	//addToInventory(123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12);
+	//cout << "Inventory size: " << inventory_size;
 	
 	//deleteFromInventory(1342);
 	//updateQuantity(1234, 100);
-	cout << " ----------------------- ";
-	printHeading();
-	printInventory();
+	//cout << " ----------------------- ";
+	//printHeading();
+	//printInventory();
+
+    //running the menu continuously
+    
+    runProgram = 1;
+    while (runProgram) {
+        welcomeMenu();
+    }
+    
+    cout << "OUT";
 
 	///code to make inventory to json data
 	for (int count = 0; count < inventory_size; count++)

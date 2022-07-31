@@ -8,6 +8,8 @@ using namespace json;
 
 //variable to keep track of inventory size
 int inventory_size;
+json_data d;
+
 
 class Item 
 {
@@ -41,16 +43,80 @@ class Item
 			Price = PriceInput;
 			Quantity = QuantityInput;
 		}
+
+		void printItem() {
+			cout << endl << this->Item_ID << " | " << this->Name << " | " << this->Price << " | " << this->Quantity << " | " << this->Category << " | " << this->Amount_Sold << endl;
+		}
 };
 
+vector<Item> Inventory;
+
+void addToInventory(int itemID, string name, float price, string expiryDate, int quantity, string category, int amtSold) {
+	Item Temp;
+	Temp.AddData(amtSold, category, expiryDate, itemID, name, price, quantity);
+	Inventory.push_back(Temp);
+	inventory_size++;
+	std::string whole = d.stringify();
+	for (int count = 0; count < 8; count++)
+	{
+		whole.erase(whole.size() - 1, 8);
+	}
+	whole = whole + ",\n        {\n        }\n    ]\n}";
+	json_util::writeStr("data.json", whole);
+	d = json_util::read("data.json");
+}
+
+int searchByItemID(int itemID) {
+	for (int i = 0; i < Inventory.size(); i++) {
+		if (Inventory[i].Item_ID == itemID) {
+			return i;
+		}
+	}
+}
+
+void deleteFromInventory(int itemID) {
+	Inventory.erase(Inventory.begin() + searchByItemID(itemID));
+	inventory_size--;
+	std::string whole2 = d.stringify();
+
+	int LastCurlyCloseBracketPos = whole2.find_last_of("}");
+	int LastCurlyOpenBracketPos = whole2.find_last_of("{");
+	whole2.erase(LastCurlyOpenBracketPos - 10, LastCurlyCloseBracketPos + 1);
+
+	whole2 = whole2 + "\n    ]\n}";
+	json_util::writeStr("data.json", whole2);
+	d = json_util::read("data.json");
+}
+
+void searchByCategory(string category) {
+	vector<Item> temp;
+	for (int i = 0; i < Inventory.size(); i++) {
+		if (Inventory[i].Category == category) {
+			temp.push_back(Inventory[i]);
+		}
+	}
+	for (int j = 0; j < temp.size(); j++) {
+		temp[j].printItem();
+	}
+}
+
+
+void printHeading() {
+	cout << endl << "Item ID | Name | Price | Quantity | Category | Amt Sold" << endl;
+}
+
+void printInventory() {
+	for (int i = 0; i < Inventory.size(); i++) {
+		Inventory[i].printItem();
+	}
+}
 
 
 int main() 
 {
 	//The adding and deleting items from inventory and the code to adjust json can be made a helper fucntion if you guys see fit
 	//Loop to declare and put all json data into inventory vector always put on top
-	std::vector<Item> Inventory;
-	json_data d = json_util::read("data.json");
+	d = json_util::read("data.json");
 
 	inventory_size = 5;// this needs to be set according to our test size
 
@@ -67,45 +133,17 @@ int main()
 		Item Item1;
 		Item1.AddDataInitial(Amount_SoldJson.val(), CategoryJson.val(), Date_Of_ExpirationJson.val(), Item_IDJson.val(), NameJson.val(), PriceJson.val(), QuantityJson.val());
 		Inventory.push_back(Item1);
-		
 	}
 	//Rest of whatever code
 
-	///this section needed whenever any new data is added to the inventory test code shown
-	Item Item2;
-	Item2.AddData(69, "Meat", "2022-09-12", 12222, "BIG MEAT", 69.99, 420);
-	Inventory.push_back(Item2);
-	///essential
-	inventory_size++;
-	std::string whole = d.stringify();
-	for (int count = 0; count < 8; count++)
-	{
-		whole.erase(whole.size() - 1, 8);
-	}
-	whole = whole + ",\n        {\n        }\n    ]\n}";
-	json_util::writeStr("data.json",whole);
-	d = json_util::read("data.json");
-	///
+	printHeading();
+	//printInventory();
+	//searchByCategory("Meat");
 
+	//addToInventory(123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12);
 	
-	///Example of deleting item from inventory
-	Inventory.erase(Inventory.begin()+1, Inventory.begin() + 2);
-	inventory_size--;
-	
-	///essential everytime item from inventory is deleted
-	std::string whole2 = d.stringify();
+	//deleteFromInventory(1342);
 
-	int LastCurlyCloseBracketPos = whole2.find_last_of("}");
-	int LastCurlyOpenBracketPos = whole2.find_last_of("{");
-	whole2.erase(LastCurlyOpenBracketPos-10, LastCurlyCloseBracketPos+1);
-
-	whole2 = whole2 + "\n    ]\n}";
-	json_util::writeStr("data.json", whole2);
-	d = json_util::read("data.json");
-	Inventory.pop_back();
-	inventory_size--;
-	
-	
 	///code to make inventory to json data
 	for (int count = 0; count < inventory_size; count++)
 	{

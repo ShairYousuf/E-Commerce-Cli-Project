@@ -10,10 +10,19 @@
             "Quantity": 30
         },
         {
-            "Amount_Sold": 97,
+            "Amount_Sold": 95,
             "Category": "Meat",
             "Date_Of_Expiration": "2023-08-18",
-            "Item_ID": 12222,
+            "Item_ID": 1342,
+            "Name": "BIG MEAT",
+            "Price": 69.99,
+            "Quantity": 420
+        },
+        {
+            "Amount_Sold": 96,
+            "Category": "Meat",
+            "Date_Of_Expiration": "2023-08-18",
+            "Item_ID": 1543,
             "Name": "BIG MEAT",
             "Price": 69.99,
             "Quantity": 420
@@ -22,16 +31,7 @@
             "Amount_Sold": 97,
             "Category": "Meat",
             "Date_Of_Expiration": "2023-08-18",
-            "Item_ID": 12222,
-            "Name": "BIG MEAT",
-            "Price": 69.99,
-            "Quantity": 420
-        },
-        {
-            "Amount_Sold": 97,
-            "Category": "Meat",
-            "Date_Of_Expiration": "2023-08-18",
-            "Item_ID": 12222,
+            "Item_ID": 1392,
             "Name": "BIG MEAT",
             "Price": 69.99,
             "Quantity": 420
@@ -40,7 +40,7 @@
             "Amount_Sold": 69,
             "Category": "Meat",
             "Date_Of_Expiration": "2022-09-12",
-            "Item_ID": 12222,
+            "Item_ID": 1098,
             "Name": "BIG MEAT",
             "Price": 69.99,
             "Quantity": 420

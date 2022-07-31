@@ -47,7 +47,7 @@ class Sort
     {
         Sort* temp = *head;
         (*head) = (*head)->next;
-        free(temp);
+        delete[] temp;
 
     }
     // Function to push according to priority
@@ -173,8 +173,15 @@ class Sort
         {
             cout<<i<<" : "<<temp->name<<" | "<<temp->price<<" | "<<temp->quantity<<" | "<<temp->date<<" | "<<endl;
             temp=temp->next;
+            i++;
         }
         
     }
-    
+    void ClearQueue(Sort **head)
+    {
+        while ((*head)->next!=NULL)
+        {
+            pop(head);
+        }
+    }
 };

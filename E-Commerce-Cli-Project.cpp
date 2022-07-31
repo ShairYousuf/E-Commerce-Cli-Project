@@ -750,7 +750,7 @@ int main()
 	//Loop to declare and put all json data into inventory vector always put on top
 	d = json_util::read("data.json");
 
-	inventory_size = 5;// this needs to be set according to our test size
+	inventory_size = 7;// this needs to be set according to our test size
 
 	for (int count = 0; count < inventory_size; count++)
 	{

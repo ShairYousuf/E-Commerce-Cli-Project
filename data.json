@@ -44,6 +44,24 @@
             "Name": "Carrots",
             "Price": 1.99,
             "Quantity": 16
+        },
+        {
+            "Amount_Sold": 26,
+            "Category": "Fruits and Veg",
+            "Date_Of_Expiration": "2022-08-01",
+            "Item_ID": 6923,
+            "Name": "Banana",
+            "Price": 0.99,
+            "Quantity": 34
+        },
+        {
+            "Amount_Sold": 0,
+            "Category": "Chocolate",
+            "Date_Of_Expiration": "2022-09-15",
+            "Item_ID": 7894,
+            "Name": "Kitkat",
+            "Price": 2.99,
+            "Quantity": 20
         }
     ]
 }

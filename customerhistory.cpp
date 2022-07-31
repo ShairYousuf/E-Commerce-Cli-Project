@@ -3,19 +3,19 @@
 using namespace std;
 
 
-class Node{
+template <typename T1, typename T2, typename T3, typename T4> class Node{
     public: 
-    int ID;
-    string Name;
-    string Email;
-    string Phone;
+    T1 ID;
+    T2 Name;
+    T3 Email;
+    T4 Phone;
     //history array; know name of class. similar to node type
 
     Node(){
 
     };
 
-    Node(int id, string name, string email, string phone ) //add history array
+    Node(T1 id, T2 name, T3 email, T4 phone) //add history array
     {
       ID = id;
       Name = name;
@@ -27,7 +27,7 @@ class Node{
 };
 
 
-class CustomerHistoryQueue
+template <typename T1, typename T2, typename T3, typename T4> class CustomerHistoryQueue
 {
 	// Initialize front and rear
 	int rear, front;
@@ -35,28 +35,22 @@ class CustomerHistoryQueue
 	// Circular Queue
 	int size;
     int currentsize;
-	Node *arr;
+	Node <T1, T2, T3, T4> *arr;
 public:
 	CustomerHistoryQueue(int s)
 	{
 	front = rear = -1;
 	size = s;
     currentsize=0;
-	arr = new Node[s];
+	arr = new Node<T1, T2, T3, T4>[s];
 	}
 
-	void enQueue(int id, string name, string email, string phone);//add history array
-	void deQueue();
-	void displayQueue();
-    void printCustomerInfo(int idnumber);
-};
-
-
-//Function to add to circular queue
-
-void CustomerHistoryQueue::enQueue(int id, string name, string email, string phone)//add history array
+    
+    
+    //Function to add to circular queue
+    void enQueue(T1 id, T2 name, T3 email, T4 phone)//add history array
 {
-    Node node = Node (id, name, email, phone);//add history array
+    Node <T1, T2, T3, T4>node = Node <T1, T2, T3, T4>(id, name, email, phone);//add history array
 
     //check to see if the queue is full (has 5 items). if so, delete it
 
@@ -88,8 +82,8 @@ void CustomerHistoryQueue::enQueue(int id, string name, string email, string pho
 	}
 }
 
-// Function to delete element from queue
-void CustomerHistoryQueue::deQueue()
+	// Function to delete element from queue
+void deQueue()
 {
 	if (front == -1)
 	{
@@ -98,7 +92,7 @@ void CustomerHistoryQueue::deQueue()
 	}
 
 
-	arr[front] = Node();
+	arr[front] = Node<T1, T2, T3, T4>();
 	if (front == rear)
 	{
 		front = -1;
@@ -114,9 +108,10 @@ void CustomerHistoryQueue::deQueue()
 
 }
 
+
 // to display the elements of the queue
 
-void CustomerHistoryQueue::displayQueue()
+void displayQueue()
 {
 	if (front == -1)
 	{
@@ -129,7 +124,7 @@ void CustomerHistoryQueue::displayQueue()
 		for (int i = front; i <= rear; i++){
 
 			
-			Node n = arr[i];
+			Node <T1, T2, T3, T4>n = arr[i];
             cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
 		}
 		    
@@ -137,11 +132,11 @@ void CustomerHistoryQueue::displayQueue()
 	else
 	{
 		for (int i = front; i < size; i++){
-		Node n = arr[i];
+		Node <T1, T2, T3, T4>n = arr[i];
          cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
 		}
 		for (int i = 0; i <= rear; i++){
-			Node n = arr[i];
+			Node <T1, T2, T3, T4>n = arr[i];
              cout<<"ID:"<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
 		}
 	}
@@ -150,10 +145,10 @@ void CustomerHistoryQueue::displayQueue()
 
 
 //function to search for specific ID and print info associated with it
-void CustomerHistoryQueue::printCustomerInfo(int idnumber){
+void printCustomerInfo(T1 idnumber){
     for (int i=0; i<=currentsize; i++)
     {
-        Node n = arr[i];
+        Node <T1, T2, T3, T4>n = arr[i];
         if (n.ID == idnumber)
         {
             cout<<"Here is your customer information: ID: "<< n.ID<<", Name: "<<n.Name<<", Email: "<<n.Email<<", Phone: "<<n.Phone<<", "; //add history array
@@ -167,10 +162,20 @@ void CustomerHistoryQueue::printCustomerInfo(int idnumber){
 
 
 
+};
+
+
+
+
+
+
+
+
+
 /* Driver of the program */
 int main()
 {
-	CustomerHistoryQueue q(5);
+	CustomerHistoryQueue <int, string, string, string> q(5);
 
 	// Inserting elements in Circular Queue
 	q.enQueue(1569, "snaazzy", "snzyemail", "709876543");
@@ -180,10 +185,10 @@ int main()
 
 	// Display elements present in Circular Queue
 	q.displayQueue();
-   // q.deQueue();
-    //q.deQueue();
+    q.deQueue();
+    q.deQueue();
 
-//	q.displayQueue();
+	q.displayQueue();
 
 //	q.enQueue(9009, "your mom", "yourmom@gmail.com", "70942065");
 //	q.enQueue(2056, "krishna", "krishna@mun.ca", "7091234567");

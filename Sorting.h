@@ -1,3 +1,6 @@
+#ifndef SORTING_H
+#define SORTING_H
+
 #include <iostream>
 using namespace std;
 #include <string>
@@ -185,3 +188,4 @@ class Sort
         }
     }
 };
+#endif

@@ -254,7 +254,7 @@ void searchByName() {
 
 //function to sort inventory by date
 void sortByDate() {
-    Sort<double, int, string>* head = NULL;
+    Sort<double, int, string>* head = new Sort<double, int, string>();
     vector<Item>invtemp = Inventory;
     head->ItemID = invtemp[0].Item_ID;
     head->name = invtemp[0].Name;
@@ -277,7 +277,7 @@ void sortByDate() {
 void sortByPrice() {
     ///
     /// iterate through inventory and then use Sorting.cpp
-    Sort<double, int, int>* head = NULL;
+    Sort<double, int, int>* head = new Sort<double,int,int>();
     vector<Item>invtemp = Inventory;
     head->ItemID = invtemp[0].Item_ID;
     head->name = invtemp[0].Name;

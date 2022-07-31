@@ -3,7 +3,7 @@
 #include <fstream>
 #include "json.h"
 #include <vector>
-#include <sorting.h>
+#include "Sorting.h"
 using namespace std;
 using namespace json;
 
@@ -268,15 +268,14 @@ void sortByDate() {
     }
     head->printQueue(&head, "date");
     head->ClearQueue(&head);
-    
 
-
+    //goes to add cart menu
+    addToCart();
 }
 
 //function to sort inventory by price
 void sortByPrice() {
-    ///
-    /// iterate through inventory and then use Sorting.cpp
+    /// iterate through inventory and then use Sorting.h
     Sort<double, int, int>* head = new Sort<double,int,int>();
     vector<Item>invtemp = Inventory;
     head->ItemID = invtemp[0].Item_ID;
@@ -291,6 +290,9 @@ void sortByPrice() {
     }
     head->printQueue(&head, "price");
     head->ClearQueue(&head);
+ 
+    //goes to add cart menu
+    addToCart();
 }
 
 void storeMenu() {

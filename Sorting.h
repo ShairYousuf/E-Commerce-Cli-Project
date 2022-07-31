@@ -178,7 +178,7 @@ class Sort
         }
         while(temp->next!=NULL)
         {
-            cout<<i<<" : "<<temp->name<<" | "<<temp->price<<" | "<<temp->quantity<<" | "<<temp->date<<" | "<<endl;
+            cout<<i<<" : "<<" | "<<temp->ItemID<<" | " << temp->name << " | " << temp->price << " | " << temp->quantity << " | " << temp->date << " | " << endl;
             temp=temp->next;
             i++;
         }

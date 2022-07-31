@@ -3,6 +3,7 @@
 #include <fstream>
 #include "json.h"
 #include <vector>
+#include <Cart.h>
 #include "Sorting.h"
 #include "customerhistory.cpp"
 #include "inventoryreorder.cpp"
@@ -13,6 +14,8 @@ using namespace json;
 //variable to keep track of inventory size
 int inventory_size;
 json_data d;
+//Variable for Cart manipulation
+Node<double, int>* head_node = NULL;
 
 //CustomerHistory Circular Queue
 CustomerHistoryQueue <int, string, string, string> customerHistory(5);
@@ -186,11 +189,35 @@ void addToCart() {
     cout << endl << "--------------------" << endl;
 
     int input = 0;
+    int quan = 0;
+    
     while (input != -1) {
+        quan = 0;
         cout << "Which item would you like to order? Please enter Item ID (Input -1 to go back): ";
         cin >> input;
-        if (input != -1) {
-            //function to add to cart 
+        if (input == -1)
+        {
+            mainMenu();
+        }
+        cout << "How many would you like to buy? (Input -1 to go back): ";
+        cin >> quan;
+        vector<Item> temp;
+        for (int i = 0; i < Inventory.size(); i++) {
+            if (Inventory[i].Item_ID == input) {
+                temp.push_back(Inventory[i]);
+            }
+        }
+
+        if (input != -1 && quan != -1)
+        {
+            //function to add to cart
+            
+            head_node->push(&head_node, input, temp[0].Name, temp[0].Category, temp[0].Price, quan, temp[0].Date_Of_Expiration);
+            cout << endl;
+            cout << endl;
+            cout << temp[0].Name << " : " << "x " << quan << " has been added to the Cart>" << endl;
+            cout << endl;
+            cout << endl;
             /// pushToCart(customerID, itemID);
             cout << "**Added to cart Item ID: " << input << " **" << endl;
             cout << "\n" << endl;
@@ -282,6 +309,7 @@ void sortByDate() {
     {
         head->pushDate(&head, invtemp[i].Item_ID, invtemp[i].Name, invtemp[i].Price, invtemp[i].Quantity, invtemp[i].Date_Of_Expiration);
     }
+    printHeading();
     head->printQueue(&head, "date");
     head->ClearQueue(&head);
 
@@ -300,13 +328,14 @@ void sortByPrice() {
     head->quantity = invtemp[0].Quantity;
     head->priority = invtemp[0].Price;
     head->date = invtemp[0].Date_Of_Expiration;
-    for (int i = 1; i < invtemp.size(); i++)
+    for (int i = 1; i <invtemp.size(); i++)
     {
         head->push(&head, invtemp[i].Item_ID, invtemp[i].Name, invtemp[i].Price, invtemp[i].Quantity, invtemp[i].Date_Of_Expiration);
     }
+    printHeading();
     head->printQueue(&head, "price");
     head->ClearQueue(&head);
- 
+    
     //goes to add cart menu
     addToCart();
 }
@@ -359,7 +388,23 @@ void storeMenu() {
         break;
     }
 }
+void updateInv(Node<double,int>** head_ref)
+{
+    Node<double, int>* current = *head_ref;
+    while (current!=NULL)
+    {
+        for (int i = 0;i < Inventory.size();i++)
+        {
+            if (current->ItemID == Inventory[i].Item_ID)
+            {
+                Inventory[i].Quantity = Inventory[i].Quantity -current->quantity;
+                Inventory[i].Amount_Sold = Inventory[i].Amount_Sold + current->quantity;
+            };
+        }
+        current = current->next;
+    }
 
+}
 //asks customer what products they want to order and adds it to the cart
 void checkOut() {
 
@@ -367,6 +412,48 @@ void checkOut() {
     /// reduces quantity from the inventory array and increases amount ordered
     /// put into customer's history
     /// c
+    //cout<<"For Customer: "<<CustID<<endl;
+     cout<<"Items being checked out: "<<endl;
+     cout << endl;
+    printHeading();
+    Node<double,int>* current = head_node;
+    /* cout<<"Items being checked out: "<<endl;*/
+    int index = 0;
+    while (current != NULL)
+    {
+        index += 1;
+        cout << index << " : "" | " << current->ItemID << " | " << current->name << " | " << current->price << " | " << current->quantity << " | " << current->date << " | " << endl;
+        current = current->next;
+
+    }
+    head_node->Checkout(&head_node);
+    char decision;
+    cout << "Are yous sure you want to buy the listed items?(y/n)";
+    cin >> decision;
+    if (decision == 'n')
+    {
+        mainMenu();
+    }
+    else
+    {
+        //update customer history of order
+        //createCustomerHist(cusID,headref)
+        //updateINV(headref)
+        //clear cart
+        // addHistory(root,headref);
+        //addHistory(root,headref);
+        updateInv(&head_node);
+        head_node->clearList(&head_node);
+        
+        //coout<<Successfull checkout <<User<<"Thank you"<<endl;
+        mainMenu();
+
+    }
+    
+    
+
+
+
 
 }
 
@@ -375,6 +462,9 @@ void clearCart() {
     /// 
     /// NEED HELPER function to clear all the items in cart for the customer
     /// 
+    head_node->clearList(&head_node);
+    cout << "Whole Cart has been cleared for : CustomerID" << endl;
+    mainMenu();
 }
 
 void cartMenu() {

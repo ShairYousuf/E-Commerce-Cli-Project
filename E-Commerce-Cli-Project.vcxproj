@@ -116,6 +116,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\bukha\Documents\GitHub\E-Commerce-Cli-Project;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Users\bukha\Documents\GitHub\E-Commerce-Cli-Project;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,6 +152,7 @@
     <None Include="data.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cart.h" />
     <ClInclude Include="json.h" />
     <ClInclude Include="Sorting.h" />
     <ClInclude Include="util.h" />

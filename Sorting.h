@@ -101,24 +101,31 @@ class Sort
         {
             
             stringstream ss;
-            ss<<(head_ref->priority.at(0)+head_ref->priority.at(1)+head_ref->priority.at(2)+head_ref->priority.at(3));
-            ss>>hyear;
-            ss<<(head_ref->priority.at(5)+head_ref->priority.at(6));
-            ss>>hmonth;
-            ss<<(head_ref->priority.at(8)+head_ref->priority.at(8));
-            ss>>hday;
+            ss << head_ref->priority.substr(0, 4);
+            ss >> hyear;
+            ss.clear();
+            ss << head_ref->priority.substr(5, 2);
+            ss >> hmonth;
+            ss.clear();
+            ss << head_ref->priority.substr(8, 2);
+            ss >> hday;
+            ss.clear();
         }
         //Function to convert the expiry date of new item being added to queue
     void converttempDate(Sort* temp_ref)
         {
             
             stringstream ss;
-            ss<<(temp_ref->priority.at(0)+(temp_ref)->priority.at(1)+(temp_ref)->priority.at(2)+(temp_ref)->priority.at(3));
-            ss>>year;
-            ss<<(temp_ref->priority.at(5)+(temp_ref)->priority.at(6));
-            ss>>month;
-            ss<<(temp_ref->priority.at(8)+(temp_ref)->priority.at(8));
-            ss>>day;
+            ss.clear();
+            ss << temp_ref->priority.substr(0, 4);
+            ss >> year;
+            ss.clear();
+            ss << temp_ref->priority.substr(5, 2);
+            ss >> month;
+            ss.clear();
+            ss << temp_ref->priority.substr(8, 2);
+            ss >> day;
+            ss.clear();
         }
     void pushDate(Sort** head,int ItemId, string name,T price,T2 quantity,string date)
     {
@@ -146,7 +153,7 @@ class Sort
             //Sort *current=start->next;
             ////coverts current "Head"
             convertHeadDate(start);
-            while (start->next != NULL && hyear<=year &&hmonth<=month&&hday<day)
+            while (start!= NULL && hyear<=year &&hmonth<=month&&hday<day)
             {
                 start = start->next;
                 convertHeadDate(start);
@@ -176,7 +183,7 @@ class Sort
             cout<<"---------------------"<<endl;
             cout<<"---------------------"<<endl;
         }
-        while(temp->next!=NULL)
+        while(temp!=NULL)
         {
             cout<<i<<" : "<<" | "<<temp->ItemID<<" | " << temp->name << " | " << temp->price << " | " << temp->quantity << " | " << temp->date << " | " << endl;
             temp=temp->next;
@@ -186,11 +193,13 @@ class Sort
     }
     void ClearQueue(Sort **head)
     {
-        while ((*head)->next!=NULL)
+        while ((*head)!=NULL)
         {
-            pop(head);
+            Sort* temp = *head;
+            (*head) = (*head)->next;
+            free(temp);
         }
-        delete[](*head);
+       
     }
 };
 #endif/

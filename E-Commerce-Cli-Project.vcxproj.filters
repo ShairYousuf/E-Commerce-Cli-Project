@@ -47,5 +47,8 @@
     <ClInclude Include="Sorting.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cart.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

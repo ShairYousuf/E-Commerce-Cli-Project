@@ -3,8 +3,11 @@
 #include <fstream>
 #include "json.h"
 #include <vector>
-#include <sorting.h>
 #include <Cart.h>
+#include "Sorting.h"
+#include "customerhistory.cpp"
+#include "inventoryreorder.cpp"
+
 using namespace std;
 using namespace json;
 
@@ -13,6 +16,12 @@ int inventory_size;
 json_data d;
 //Variable for Cart manipulation
 Node<double, int>* head_node = NULL;
+
+//CustomerHistory Circular Queue
+CustomerHistoryQueue <int, string, string, string> customerHistory(5);
+
+//Inventory Reorder Priority Queue using Min Heap tree
+PriorityQueue<int> pq;
 
 class Item 
 {
@@ -133,9 +142,15 @@ void listByName(string name) {
     }
 }
 
-//updates the quantity of a specific item using Item ID
-void updateQuantity(int itemID, int amt) {
-	Inventory[searchByItemID(itemID)].Quantity += amt;
+//updates the quantity of a specific item 
+void updateQuantity(int quantity, int amt) {
+    vector<int> ID;
+    for (int i = 0; i < Inventory.size(); i++) {
+        if (Inventory[i].Quantity == quantity) {
+            Inventory[i].Quantity += amt;
+            cout << "Ordered " << amt << " units for " << Inventory[i].Name << endl;
+        }
+    }
 }
 
 //helper function to print heading template for list of Inventory
@@ -162,6 +177,7 @@ void mainMenu();
 void storeMenu();
 void adminMenu();
 void storeMenu();
+void customerInfo();
 
 //string holding the current customer's ID
 string customerID;
@@ -296,17 +312,14 @@ void sortByDate() {
     printHeading();
     head->printQueue(&head, "date");
     head->ClearQueue(&head);
+
     //goes to add cart menu
     addToCart();
-    
-
-
 }
 
 //function to sort inventory by price
 void sortByPrice() {
-    ///
-    /// iterate through inventory and then use Sorting.cpp
+    /// iterate through inventory and then use Sorting.h
     Sort<double, int, int>* head = new Sort<double,int,int>();
     vector<Item>invtemp = Inventory;
     head->ItemID = invtemp[0].Item_ID;
@@ -322,6 +335,7 @@ void sortByPrice() {
     printHeading();
     head->printQueue(&head, "price");
     head->ClearQueue(&head);
+    
     //goes to add cart menu
     addToCart();
 }
@@ -494,24 +508,30 @@ void registerCustomer() {
     cout << endl << "   Promotion Registration  " << endl;
     cout << endl << "---------------------------" << endl;
 
+    int ID;
     string name, email, phone;
+
+    cout << endl << "Please input your ID: ";
+    cin >> ID;
 
     cout << endl << "Please input your name: ";
     cin >> name;
 
-    cout << endl << "Plese input your email: ";
+    cout << endl << "Please input your email: ";
     cin >> email;
 
     cout << endl << "Please input your phone number: ";
     cin >> phone;
 
-    /// <summary>
-    /// NEED: THIS part has to be changed to input the information into customer history data structure
-    /// </summary>
-    /// 
+    //adds to the circular queue
+    customerHistory.enQueue(ID, name, email, phone);
+
     cout << "\n" << endl;
     cout << "Following information was collected: " << endl;
-    cout << endl << "Name: " << name << "; Email: " << email << "; Phone: " << phone << endl;
+    cout << endl << "ID: " << ID << "; Name: " << name << "; Email: " << email << "; Phone: " << phone << endl;
+    
+    //goes back to customer Info menu
+    customerInfo();
 }
 
 //lists all the orders 
@@ -600,23 +620,48 @@ void mainMenu() {
     }
 }
 
-//admin goes to menu to reorder inventory for the store
+//admin goes to menu to reorder inventory for the store 
 void reorder() {
     cout << endl << "---------------------" << endl;
     cout << endl << "     Reorder Menu   " << endl;
     cout << endl << "---------------------" << endl;
     string answer;
+    int amt;
+    for (int i = 0; i < Inventory.size(); i++) {
+        pq.push(Inventory[i].Quantity);
+    }
+
+    int temp1 = pq.top();
+    cout << temp1 << ", ";
+    pq.pop();
+    int temp2 = pq.top();
+    cout << temp2 << ", ";
+    pq.pop();
+    int temp3 = pq.top();
+    cout << temp3 << ", ";
+    pq.pop();
+    int temp4 = pq.top();
+    cout << temp4 << ", ";
+    pq.pop();
+    int temp5 = pq.top();
+    cout << temp5 << "\n";
+    pq.pop();
 
     //Asking what products to reorder and quantity to reorder
     cout << endl << "Would you like to reorder the top 5 products? (Input Y or N): ";
     cin >> answer;
 
+    cout << endl << "How much would you like to order?: ";
+    //use large amt of >50
+    cin >> amt;
+
     if (answer == "Y") {
-        ///
-        /// function to reorder inventory which basically just adds the quantity to the itemID
-        ///
-        cout << "*** Reorder Summary: items ordered for Item ID: ***" << endl;
-        ///Prints all the items that were reorderd 
+        updateQuantity(temp1, amt);
+        updateQuantity(temp2, amt);
+        updateQuantity(temp3, amt);
+        updateQuantity(temp4, amt);
+        updateQuantity(temp5, amt);
+        cout << endl << "*** Reorder Summary: items ordered successfully ***" << endl;
     }
     else if (answer == "N") {
         cout << "*** No orders were made ***" << endl;
@@ -625,13 +670,16 @@ void reorder() {
 }
 
 //function prints all the customers in the customer history circular queue
-void customerHistory() {
+void displayCustomerHistory() {
     cout << endl << "-------------------------" << endl;
     cout << endl << "     Customer History  " << endl;
     cout << endl << "-------------------------" << endl;
 
-    ///helper function to print everything
-
+    cout << "Following are the customers that registered for the promotion: " << endl;
+    customerHistory.displayQueue();
+    
+    //goes back to admin menu
+    adminMenu();
 }
 
 //function that asks for information to add about item to inventory
@@ -721,7 +769,7 @@ void adminMenu() {
         reorder();
         break;
     case 2:
-        customerHistory();
+        displayCustomerHistory();
         break;
     case 3:
         addNewItemMenu();
@@ -827,7 +875,7 @@ int main()
 	//Loop to declare and put all json data into inventory vector always put on top
 	d = json_util::read("data.json");
 
-	inventory_size = 5;// this needs to be set according to our test size
+	inventory_size = 7;// this needs to be set according to our test size
 
 	for (int count = 0; count < inventory_size; count++)
 	{

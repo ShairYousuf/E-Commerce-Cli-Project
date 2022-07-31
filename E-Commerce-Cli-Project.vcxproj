@@ -141,7 +141,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="customerhistory.cpp" />
     <ClCompile Include="E-Commerce-Cli-Project.cpp" />
+    <ClCompile Include="inventoryreorder.cpp" />
     <ClCompile Include="json_data.cpp" />
     <ClCompile Include="json_util.cpp" />
     <ClCompile Include="util.cpp" />

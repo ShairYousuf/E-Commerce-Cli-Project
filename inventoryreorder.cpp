@@ -6,39 +6,39 @@ using namespace std;
  
 
 //Priority Queue in min heap mode
-struct PriorityQueue
+template <typename T> struct PriorityQueue
 {
 private:
     // vector  which stores heap elements
-    vector<int> V;
+    vector<T> V;
  
     // return parent 
-    int parentNode(int i) 
+    T parentNode(T i) 
     {
         return (i - 1) / 2;
     }
  
     // return left child
-    int LEFT(int i) 
+    T LEFT(T i) 
     {
         return (2*i + 1);
     }
  
     // return right child
-    int RIGHT(int i) 
+    T RIGHT(T i) 
     {
         return (2*i + 2);
     }
  
 
     //Goes down the heap
-    void DownHeap(int i)
+    void DownHeap(T i)
     {
         // obtain the left and right child of the given node
-        int left = LEFT(i);
-        int right = RIGHT(i);
+        T left = LEFT(i);
+        T right = RIGHT(i);
  
-        int smallest = i;
+        T smallest = i;
 
         //compares it with the left and right child to find the smallest value
         if (left < size() && V[left] < V[i]) {
@@ -58,7 +58,7 @@ private:
     }
  
     // Go up the Heap
-    void UpHeap(int i)
+    void UpHeap(T i)
     {
         //check to see if the heap property was "violated". if so, swap the child and parent node
         if (i && V[parentNode(i)] > V[i])
@@ -82,13 +82,13 @@ public:
     }
  
     //put a key into the heap
-    void push(int key)
+    void push(T key)
     {
         // put another element at the end of vector
         V.push_back(key);
  
         //obtain the index and use UpHeap
-        int index = size() - 1;
+        T index = size() - 1;
         UpHeap(index);
     }
  
@@ -127,19 +127,19 @@ public:
             }
  
             // otherwise, print first 5 elements
-            int temp1 = q.top();
+            T temp1 = q.top();
             cout<<temp1<<", ";
             q.pop();
-            int temp2 = q.top();
+            T temp2 = q.top();
             cout<<temp2<<", ";
             q.pop();
-            int temp3 = q.top();
+            T temp3 = q.top();
             cout<<temp3<<", ";
             q.pop();
-            int temp4 = q.top();
+            T temp4 = q.top();
             cout<<temp4<<", ";
             q.pop();
-            int temp5 = q.top();
+            T temp5 = q.top();
             cout<<temp5<<"\n";
             q.pop();
 
@@ -158,7 +158,7 @@ public:
         }
     }
 
-    int top()
+    T top()
     {
         try {
             //check if there are no items
@@ -188,19 +188,19 @@ void Reorder20(PriorityQueue &q)
             }
  
             // otherwise, add 20 to the quantity of the first 5 items in the priority list
-            int temp1 = q.top();
+            T temp1 = q.top();
             cout<<temp1<<", ";
             q.pop();
-            int temp2 = q.top();
+            T temp2 = q.top();
             cout<<temp2<<", ";
             q.pop();
-            int temp3 = q.top();
+            T temp3 = q.top();
             cout<<temp3<<", ";
             q.pop();
-            int temp4 = q.top();
+            T temp4 = q.top();
             cout<<temp4<<", ";
             q.pop();
-            int temp5 = q.top();
+            T temp5 = q.top();
             cout<<temp5<<"\n";
             q.pop();
 
@@ -219,23 +219,21 @@ void Reorder20(PriorityQueue &q)
         }
     }
 
-
-
-
-
 };
- 
+
+
+/*
 // Min Heap implementation in C++
 int main()
 {
-    PriorityQueue pq;
+    PriorityQueue<double> pq;
  
     // Note: The element's value decides priority
  
-    pq.push(45);
-    pq.push(2);
-    pq.push(35);
-    pq.push(72);
+    pq.push(45.5);
+    pq.push(2.3);
+    pq.push(35.9);
+    pq.push(72.765);
     pq.push(54);
     pq.push(1);
  
@@ -269,7 +267,7 @@ int main()
  
     pq.top();    // top operation on an empty heap
     pq.pop();    // pop operation on an empty heap
-    */
+    
  
     return 0;
-}
+} */

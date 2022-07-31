@@ -19,18 +19,20 @@ template <class T,class T2,class T3>
 class Sort
 {
     public:
-    string name;
-    T price;
-    T2 quantity;
-    string expiry;
-    T3 priority;
-    Sort* next;
-    string date;
+        int ItemID;
+        string name;
+        T price;
+        T2 quantity;
+        string expiry;
+        T3 priority;
+        Sort* next;
+        string date;
 
     //Node for price sorting
-    Sort* newNode(string name,T price,T2 quantity,string date)
+    Sort* newNode(int ItemID,string name,T price,T2 quantity,string date)
     {
         Sort* temp = new Sort();
+        temp->ItemID = ItemID;
         temp->name = name;
         temp->price=price;
         temp->quantity=quantity;
@@ -54,11 +56,11 @@ class Sort
 
     }
     // Function to push according to priority
-    void push(Sort** head, string name,T price,T2 quantity)
+    void push(Sort** head,int ItemId, string name,T price,T2 quantity,string date)
     {
         Sort* start = (*head);
         // Create new Sort
-        Sort* temp = newNode(name, price,quantity);
+        Sort* temp = newNode(ItemId,name, price,quantity,date);
         // Special Case: The head of list has
         // lesser priority than new node
         if ((*head)->priority > price) 
@@ -82,9 +84,10 @@ class Sort
         }
     }
     //New node for date sorting
-    Sort* newNode1(string name,T price,T2 quantity,string date)
+    Sort* newNode1(int ItemID,string name,T price,T2 quantity,string date)
     {
         Sort* temp = new Sort();
+        temp->ItemID = ItemID;
         temp->name = name;
         temp->price=price;
         temp->quantity=quantity;
@@ -117,13 +120,13 @@ class Sort
             ss<<(temp_ref->priority.at(8)+(temp_ref)->priority.at(8));
             ss>>day;
         }
-    void pushDate(Sort** head, string name,T price,T2 quantity,string date)
+    void pushDate(Sort** head,int ItemId, string name,T price,T2 quantity,string date)
     {
         
         stringstream ss;
         Sort* start = (*head);
         // Create new Sort
-        Sort* temp = newNode1(name, price,quantity,date);
+        Sort* temp = newNode1(ItemId,name, price,quantity,date);
         // Special Case: The head of list has
         // lesser priority than new node
         //converts head
@@ -140,12 +143,13 @@ class Sort
         {
         // Traverse the list and find a
         // position to insert new node
-            Sort *current=start->next;
-            //coverts current "Head"
-            convertHeadDate(current);
+            //Sort *current=start->next;
+            ////coverts current "Head"
+            convertHeadDate(start);
             while (start->next != NULL && hyear<=year &&hmonth<=month&&hday<day)
             {
                 start = start->next;
+                convertHeadDate(start);
             }
             // Either at the ends of the list
             // or at required position
@@ -186,6 +190,7 @@ class Sort
         {
             pop(head);
         }
+        delete[](*head);
     }
 };
 #endif

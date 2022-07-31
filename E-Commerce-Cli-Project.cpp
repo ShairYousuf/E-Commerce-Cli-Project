@@ -5,6 +5,7 @@
 #include <vector>
 #include "Sorting.h"
 #include "customerhistory.cpp"
+#include "inventoryreorder.cpp"
 
 using namespace std;
 using namespace json;
@@ -15,6 +16,9 @@ json_data d;
 
 //CustomerHistory Circular Queue
 CustomerHistoryQueue <int, string, string, string> customerHistory(5);
+
+//Inventory Reorder Priority Queue using Min Heap tree
+PriorityQueue<int> pq;
 
 class Item 
 {
@@ -135,9 +139,15 @@ void listByName(string name) {
     }
 }
 
-//updates the quantity of a specific item using Item ID
-void updateQuantity(int itemID, int amt) {
-	Inventory[searchByItemID(itemID)].Quantity += amt;
+//updates the quantity of a specific item 
+void updateQuantity(int quantity, int amt) {
+    vector<int> ID;
+    for (int i = 0; i < Inventory.size(); i++) {
+        if (Inventory[i].Quantity == quantity) {
+            Inventory[i].Quantity += amt;
+            cout << "Ordered " << amt << " units for " << Inventory[i].Name << endl;
+        }
+    }
 }
 
 //helper function to print heading template for list of Inventory
@@ -520,23 +530,48 @@ void mainMenu() {
     }
 }
 
-//admin goes to menu to reorder inventory for the store
+//admin goes to menu to reorder inventory for the store 
 void reorder() {
     cout << endl << "---------------------" << endl;
     cout << endl << "     Reorder Menu   " << endl;
     cout << endl << "---------------------" << endl;
     string answer;
+    int amt;
+    for (int i = 0; i < Inventory.size(); i++) {
+        pq.push(Inventory[i].Quantity);
+    }
+
+    int temp1 = pq.top();
+    cout << temp1 << ", ";
+    pq.pop();
+    int temp2 = pq.top();
+    cout << temp2 << ", ";
+    pq.pop();
+    int temp3 = pq.top();
+    cout << temp3 << ", ";
+    pq.pop();
+    int temp4 = pq.top();
+    cout << temp4 << ", ";
+    pq.pop();
+    int temp5 = pq.top();
+    cout << temp5 << "\n";
+    pq.pop();
 
     //Asking what products to reorder and quantity to reorder
     cout << endl << "Would you like to reorder the top 5 products? (Input Y or N): ";
     cin >> answer;
 
+    cout << endl << "How much would you like to order?: ";
+    //use large amt of >50
+    cin >> amt;
+
     if (answer == "Y") {
-        ///
-        /// function to reorder inventory which basically just adds the quantity to the itemID
-        ///
-        cout << "*** Reorder Summary: items ordered for Item ID: ***" << endl;
-        ///Prints all the items that were reorderd 
+        updateQuantity(temp1, amt);
+        updateQuantity(temp2, amt);
+        updateQuantity(temp3, amt);
+        updateQuantity(temp4, amt);
+        updateQuantity(temp5, amt);
+        cout << endl << "*** Reorder Summary: items ordered successfully ***" << endl;
     }
     else if (answer == "N") {
         cout << "*** No orders were made ***" << endl;

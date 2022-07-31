@@ -219,12 +219,10 @@ void Reorder20(PriorityQueue &q)
         }
     }
 
-
-
-
-
 };
- 
+
+
+/*
 // Min Heap implementation in C++
 int main()
 {
@@ -269,7 +267,7 @@ int main()
  
     pq.top();    // top operation on an empty heap
     pq.pop();    // pop operation on an empty heap
-    */
+    
  
     return 0;
-}
+} */

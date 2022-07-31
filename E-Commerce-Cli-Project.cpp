@@ -3,6 +3,7 @@
 #include <fstream>
 #include "json.h"
 #include <vector>
+#include <sorting.h>
 using namespace std;
 using namespace json;
 
@@ -253,6 +254,22 @@ void searchByName() {
 
 //function to sort inventory by date
 void sortByDate() {
+    Sort<double, int, string>* head = NULL;
+    vector<Item>invtemp = Inventory;
+    head->ItemID = invtemp[0].Item_ID;
+    head->name = invtemp[0].Name;
+    head->price = invtemp[0].Price;
+    head->quantity = invtemp[0].Quantity;
+    head->priority = invtemp[0].Date_Of_Expiration;
+    head->date = invtemp[0].Date_Of_Expiration;
+    for (int i = 1; i < invtemp.size(); i++)
+    {
+        head->pushDate(&head, invtemp[i].Item_ID, invtemp[i].Name, invtemp[i].Price, invtemp[i].Quantity, invtemp[i].Date_Of_Expiration);
+    }
+    head->printQueue(&head, "date");
+    head->ClearQueue(&head);
+    
+
 
 }
 
@@ -260,6 +277,20 @@ void sortByDate() {
 void sortByPrice() {
     ///
     /// iterate through inventory and then use Sorting.cpp
+    Sort<double, int, int>* head = NULL;
+    vector<Item>invtemp = Inventory;
+    head->ItemID = invtemp[0].Item_ID;
+    head->name = invtemp[0].Name;
+    head->price = invtemp[0].Price;
+    head->quantity = invtemp[0].Quantity;
+    head->priority = invtemp[0].Price;
+    head->date = invtemp[0].Date_Of_Expiration;
+    for (int i = 1; i < invtemp.size(); i++)
+    {
+        head->push(&head, invtemp[i].Item_ID, invtemp[i].Name, invtemp[i].Price, invtemp[i].Quantity, invtemp[i].Date_Of_Expiration);
+    }
+    head->printQueue(&head, "price");
+    head->ClearQueue(&head);
 }
 
 void storeMenu() {

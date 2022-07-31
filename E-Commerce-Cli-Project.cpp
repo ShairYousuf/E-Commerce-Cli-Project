@@ -4,12 +4,17 @@
 #include "json.h"
 #include <vector>
 #include "Sorting.h"
+#include "customerhistory.cpp"
+
 using namespace std;
 using namespace json;
 
 //variable to keep track of inventory size
 int inventory_size;
 json_data d;
+
+//CustomerHistory Circular Queue
+CustomerHistoryQueue <int, string, string, string> customerHistory(5);
 
 class Item 
 {
@@ -159,6 +164,7 @@ void mainMenu();
 void storeMenu();
 void adminMenu();
 void storeMenu();
+void customerInfo();
 
 //string holding the current customer's ID
 string customerID;
@@ -402,24 +408,30 @@ void registerCustomer() {
     cout << endl << "   Promotion Registration  " << endl;
     cout << endl << "---------------------------" << endl;
 
+    int ID;
     string name, email, phone;
+
+    cout << endl << "Please input your ID: ";
+    cin >> ID;
 
     cout << endl << "Please input your name: ";
     cin >> name;
 
-    cout << endl << "Plese input your email: ";
+    cout << endl << "Please input your email: ";
     cin >> email;
 
     cout << endl << "Please input your phone number: ";
     cin >> phone;
 
-    /// <summary>
-    /// NEED: THIS part has to be changed to input the information into customer history data structure
-    /// </summary>
-    /// 
+    //adds to the circular queue
+    customerHistory.enQueue(ID, name, email, phone);
+
     cout << "\n" << endl;
     cout << "Following information was collected: " << endl;
-    cout << endl << "Name: " << name << "; Email: " << email << "; Phone: " << phone << endl;
+    cout << endl << "ID: " << ID << "; Name: " << name << "; Email: " << email << "; Phone: " << phone << endl;
+    
+    //goes back to customer Info menu
+    customerInfo();
 }
 
 //lists all the orders 
@@ -533,13 +545,16 @@ void reorder() {
 }
 
 //function prints all the customers in the customer history circular queue
-void customerHistory() {
+void displayCustomerHistory() {
     cout << endl << "-------------------------" << endl;
     cout << endl << "     Customer History  " << endl;
     cout << endl << "-------------------------" << endl;
 
-    ///helper function to print everything
-
+    cout << "Following are the customers that registered for the promotion: " << endl;
+    customerHistory.displayQueue();
+    
+    //goes back to admin menu
+    adminMenu();
 }
 
 //function that asks for information to add about item to inventory
@@ -629,7 +644,7 @@ void adminMenu() {
         reorder();
         break;
     case 2:
-        customerHistory();
+        displayCustomerHistory();
         break;
     case 3:
         addNewItemMenu();

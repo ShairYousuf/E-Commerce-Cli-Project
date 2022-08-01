@@ -15,7 +15,7 @@ using namespace json;
 int inventory_size;
 json_data d;
 //Variable for Cart manipulation
-Node<double, int>* head_node = NULL;
+Cart<double, int>* head_node = NULL;
 
 //CustomerHistory Circular Queue
 CustomerHistoryQueue <int, string, string, string> customerHistory(5);
@@ -388,9 +388,9 @@ void storeMenu() {
         break;
     }
 }
-void updateInv(Node<double,int>** head_ref)
+void updateInv(Cart<double,int>** head_ref)
 {
-    Node<double, int>* current = *head_ref;
+    Cart<double, int>* current = *head_ref;
     while (current!=NULL)
     {
         for (int i = 0;i < Inventory.size();i++)
@@ -416,7 +416,7 @@ void checkOut() {
      cout<<"Items being checked out: "<<endl;
      cout << endl;
     printHeading();
-    Node<double,int>* current = head_node;
+    Cart<double,int>* current = head_node;
     /* cout<<"Items being checked out: "<<endl;*/
     int index = 0;
     while (current != NULL)

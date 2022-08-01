@@ -7,7 +7,7 @@ using namespace std;
 #include<sstream>
 
 template <class T, class T2>
-class Node
+class Cart
 {
 public:
     int ItemID;
@@ -16,16 +16,16 @@ public:
     T2 quantity;
     string expiry;
     string catagory;
-    Node* next;
+    Cart* next;
     string date;
-    Node* prev;
-    // Node(int data)
+    Cart* prev;
+    // Cart(int data)
     // {
-    //     Node*new_node=new Node();
+    //     Cart*new_node=new Cart();
     //     new_node->data=data;
     // }oxen
     // print Cart
-    void printList (Node* n)
+    void printList (Cart* n)
     {
         int i=1;
         while (n != NULL ) 
@@ -36,11 +36,11 @@ public:
         }
     } 
     //Used to push to linked list
-    void push(Node** head_ref, int ItemId, string name, string catagory, T price, T2 quantity, string date)
+    void push(Cart** head_ref, int ItemId, string name, string catagory, T price, T2 quantity, string date)
     {
         if (*head_ref==NULL)
         {
-            Node* head_node=new Node();
+            Cart* head_node=new Cart();
            // head_node->name=customer_ID
            head_node->name=name;
            head_node->quantity=quantity;
@@ -54,7 +54,7 @@ public:
         else
         {
             /* 1. allocate node*/
-            Node* new_node = new Node();
+            Cart* new_node = new Cart();
             /* 2. put in the data*/
             new_node->quantity = quantity;
             new_node->ItemID = ItemId;
@@ -72,31 +72,31 @@ public:
             (*head_ref) = new_node;
         }
     }
-    Node* newNodestack(string name,int quantity)
+    Cart* newNodestack(string name,int quantity)
     {
-        Node* stackNode = new Node();
+        Cart* stackNode = new Cart();
         stackNode->name = name;
         stackNode->quantity=quantity;
         stackNode->next = NULL;
         return stackNode;
     }
     //Used to push to stack
-    void stackpush(Node* root, string name,int quantity)
+    void stackpush(Cart* root, string name,int quantity)
     {
 
-	    Node* stackNode = newNodestack(name,quantity);
+	    Cart* stackNode = newNodestack(name,quantity);
 	    stackNode->next = root;
 	    root = stackNode;
 	    cout<< name<<" : "<<quantity<< " pushed to stack\n";
     }
     //Used to pop items off stack
-    Node pop(Node** root)
+    Cart pop(Cart** root)
     {   
 	    if (*root==NULL)
         {
             cout<<"History is empty"<<endl;
         }
-	    Node* temp = *root;
+	    Cart* temp = *root;
 	    *root = (*root)->next;
 	    // string name = temp->name;
         // int quantity=temp->quantity;
@@ -105,7 +105,7 @@ public:
         return *temp;
     }
     //peeking into the stack of checked-out items
-    void peek(Node* root)
+    void peek(Cart* root)
     {   
         if (root==NULL)
         {
@@ -114,10 +114,10 @@ public:
         cout<<root->data<<endl;
     }
     // add checked-out items to order stack
-    void addHistory(Node **root, Node**head_ref)
+    void addHistory(Cart **root, Cart**head_ref)
     {
-        Node*current=*head_ref;
-        Node* root1= *root;
+        Cart*current=*head_ref;
+        Cart* root1= *root;
         while(current!=NULL)
         {
            stackpush(root1,current->name,current->quantity);
@@ -126,9 +126,9 @@ public:
     }
     //Converts stack of ordered items to string to be used to push to another stack containing UserID:History
     //Need customer ID to implement fully
-    string stackTostring(Node **root)
+    string stackTostring(Cart **root)
     {
-        Node*count=*root;
+        Cart*count=*root;
         int j=1;
         stringstream ss;
         string quantity;
@@ -143,7 +143,7 @@ public:
         {
             for(int i=0;i<j;i++)
             {
-                Node popped=pop(root);
+                Cart popped=pop(root);
                 ss<<popped.quantity;
                 ss>>quantity;
                 ss<<popped.price;
@@ -155,10 +155,10 @@ public:
         return items;
     }
     //To be changed later to delete specific items off cart
-    void deleteNode(Node** headnode,string name)
+    void deleteNode(Cart** headnode,string name)
     {
-        Node *current=*headnode;
-        Node *prev=NULL;
+        Cart *current=*headnode;
+        Cart *prev=NULL;
         if(current==NULL)
         {
             cout<<"List is empty!"<<endl;
@@ -204,12 +204,12 @@ public:
         return;
     }
     //Clear whole cart
-    void clearList(Node**headnode)
+    void clearList(Cart**headnode)
     {
        
         while ((*headnode) != NULL)
         {
-            Node* next = (*headnode);
+            Cart* next = (*headnode);
             (*headnode) = (*headnode)->next;
             free(next);
             
@@ -217,10 +217,10 @@ public:
         }
     }
     //Get caart total
-    void getTotal(Node **headref)
+    void getTotal(Cart **headref)
     {
         int price=0;
-        Node *current=*headref;
+        Cart *current=*headref;
         if (current==NULL)
         {
             cout<<"Cart is empty! please add some items to total."<<endl;;
@@ -237,9 +237,9 @@ public:
     }
     //Checkout
     //needs to be changed to implement with customer ID
-void Checkout(Node**headref)
+void Checkout(Cart**headref)
     {
-       // Node*current=*headref;
+       // Cart*current=*headref;
        ///* cout<<"Items being checked out: "<<endl;*/
        // int index=0;
        // while(current!=NULL)

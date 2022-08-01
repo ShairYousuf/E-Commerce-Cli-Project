@@ -3,7 +3,7 @@
 #include <fstream>
 #include "json.h"
 #include <vector>
-#include <Cart.h>
+#include "Cart.h"
 #include "Sorting.h"
 #include "customerhistory.cpp"
 #include "inventoryreorder.cpp"
@@ -407,11 +407,6 @@ void updateInv(Cart<double,int>** head_ref)
 }
 //asks customer what products they want to order and adds it to the cart
 void checkOut() {
-
-    /// commences order
-    /// reduces quantity from the inventory array and increases amount ordered
-    /// put into customer's history
-    /// c
     //cout<<"For Customer: "<<CustID<<endl;
      cout<<"Items being checked out: "<<endl;
      cout << endl;
@@ -428,9 +423,9 @@ void checkOut() {
     }
     head_node->Checkout(&head_node);
     char decision;
-    cout << "Are yous sure you want to buy the listed items?(y/n)";
+    cout << "Are yous sure you want to buy the listed items?(Y/N)";
     cin >> decision;
-    if (decision == 'n')
+    if (decision == 'N')
     {
         mainMenu();
     }
@@ -449,19 +444,10 @@ void checkOut() {
         mainMenu();
 
     }
-    
-    
-
-
-
-
 }
 
 //clears the cart list
 void clearCart() {
-    /// 
-    /// NEED HELPER function to clear all the items in cart for the customer
-    /// 
     head_node->clearList(&head_node);
     cout << "Whole Cart has been cleared for : CustomerID" << endl;
     mainMenu();
@@ -471,10 +457,6 @@ void cartMenu() {
     cout << endl << "------------------" << endl;
     cout << endl << "     Cart Menu    " << endl;
     cout << endl << "------------------" << endl;
-
-    ///
-    /// NEED: Shows all the items in the cart of the current customer
-    /// 
 
     //options for choosing
     cout << " 1. Checkout\n";
@@ -534,18 +516,6 @@ void registerCustomer() {
     customerInfo();
 }
 
-//lists all the orders 
-void pastOrders() {
-    cout << endl << "-------------------------" << endl;
-    cout << endl << "       Past Orders       " << endl;
-    cout << endl << "-------------------------" << endl;
-
-    /// NEED
-    /// NEED: Helper function to print contents of history for the customer
-    ///  showPastOrders(ID = 123);
-
-}
-
 //shows all the information about the customers
 void customerInfo() {
 
@@ -557,7 +527,6 @@ void customerInfo() {
 
     //options for choosing
     cout << " 1. Register for promotion\n";
-    cout << " 2. Past Orders\n";
 
     //variable for option
     int opt;
@@ -571,16 +540,12 @@ void customerInfo() {
     case 1:
         registerCustomer();
         break;
-    case 2:
-        pastOrders();
-        break;
     case -1:
         mainMenu();
         break;
     default:
         break;
     }
-
 }
 
 void mainMenu() {
@@ -890,23 +855,8 @@ int main()
 		Item1.AddDataInitial(Amount_SoldJson.val(), CategoryJson.val(), Date_Of_ExpirationJson.val(), Item_IDJson.val(), NameJson.val(), PriceJson.val(), QuantityJson.val());
 		Inventory.push_back(Item1);
 	}
-	//Rest of whatever code
 
-	//printHeading();
-	//printInventory();
-	//listByCategory("Meat");
-
-	//addToInventory(123, "Oreo", 2.99, "2022-11-12", 10, "Chocolate", 12);
-	//cout << "Inventory size: " << inventory_size;
-	
-	//deleteFromInventory(1342);
-	//updateQuantity(1234, 100);
-	//cout << " ----------------------- ";
-	//printHeading();
-	//printInventory();
-
-    //running the menu continuously
-    
+    //running the menu continuously until runProgram is set to 0
     runProgram = 1;
     while (runProgram) {
         welcomeMenu();

@@ -61,6 +61,7 @@ public:
             new_node->catagory = catagory;
             new_node->name = name;
             new_node->price = price;
+            new_node->date = date;
             /* 3. Make next of new node as head
             and previous as NULL*/
             new_node->next = (*head_ref);

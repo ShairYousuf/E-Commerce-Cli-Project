@@ -195,10 +195,6 @@ void addToCart() {
         quan = 0;
         cout << "Which item would you like to order? Please enter Item ID (Input -1 to go back): ";
         cin >> input;
-        if (input == -1)
-        {
-            mainMenu();
-        }
         cout << "How many would you like to buy? (Input -1 to go back): ";
         cin >> quan;
         vector<Item> temp;

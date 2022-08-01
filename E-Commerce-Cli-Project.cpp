@@ -857,7 +857,6 @@ void welcomeMenu() {
         break;
     case -1:
         //exits program completely
-        //exit(0);
         runProgram = 0;
         break;
     default:

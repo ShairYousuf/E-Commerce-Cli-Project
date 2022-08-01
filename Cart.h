@@ -217,7 +217,7 @@ public:
 
         }
     }
-    //Get caart total
+    //Get cart total
     void getTotal(Cart **headref)
     {
         int price=0;

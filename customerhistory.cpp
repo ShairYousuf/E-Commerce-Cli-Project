@@ -156,35 +156,3 @@ public:
 		cout<<"The ID was not found in the customer database.";
 	}
 };
-
-
-/* Driver of the program */
-/*
-int main()
-{
-	CustomerHistoryQueue <int, string, string, string> q(5);
-
-	// Inserting elements in Circular Queue
-	q.enQueue(1569, "snaazzy", "snzyemail", "709876543");
-	q.enQueue(1213, "hello", "hello", "hello");
-	q.enQueue(5674, "youdad", "dadsemail", "69696969");
-	q.enQueue(9854, "hi", "hi", "hi");
-
-	// Display elements present in Circular Queue
-	q.displayQueue();
-    q.deQueue();
-    q.deQueue();
-
-	q.displayQueue();
-
-//	q.enQueue(9009, "your mom", "yourmom@gmail.com", "70942065");
-//	q.enQueue(2056, "krishna", "krishna@mun.ca", "7091234567");
-//	q.enQueue(5271, "anna", "asbehm@mun.ca", "7098950536" );
-
-  //  q.printCustomerInfo(5271);
-//	q.displayQueue();
-
-//	q.enQueue(2053, "jo", "ma", "ma");
-	return 0;
-}
-*/
